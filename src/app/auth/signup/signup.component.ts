@@ -9,5 +9,13 @@ import { FormsModule, NgForm } from '@angular/forms';
   styleUrl: './signup.component.css',
 })
 export class SignupComponent {
-  onSignup(signupForm: NgForm) {}
+  onSignup(form: NgForm) {
+    if (form.invalid) {
+      // Mark all fields as touched to show errors
+      Object.values(form.controls).forEach((control) => {
+        control.markAsTouched();
+      });
+      return;
+    }
+  }
 }

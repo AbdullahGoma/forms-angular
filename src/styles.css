@@ -19,6 +19,31 @@
   --fieldset-bg: rgba(30, 60, 60, 0.3);
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(30, 60, 60, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 10px;
+  border: 2px solid rgba(30, 60, 60, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-color: var(--primary-light) rgba(30, 60, 60, 0.1);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -228,7 +253,7 @@ hr::after {
   display: flex;
   justify-content: flex-end;
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: 4rem;
 }
 
 .button {
@@ -445,18 +470,19 @@ legend {
   color: var(--error);
   font-size: 0.85rem;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   background: rgba(255, 153, 102, 0.1);
   border-left: 3px solid var(--error);
   border-radius: 0 0 6px 6px;
   position: absolute;
   width: 100%;
-  bottom: -2.25rem;
+  top: 100%; 
+  margin-top: -2px; 
   left: 0;
   animation: fadeIn 0.2s ease-out;
+  line-height: 1.4; 
+  white-space: normal; 
+  min-height: 3rem; 
 }
 
 .control input.invalid,
@@ -481,6 +507,8 @@ legend {
   margin-top: 0.5rem;
   margin-left: 2rem;
   width: calc(100% - 2rem);
+  position: absolute;
+  bottom: -3rem;
 }
 
 /* Form-level error message */
@@ -496,4 +524,32 @@ legend {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+}
+
+/* Disabled state styles */
+.button:disabled,
+.button[disabled] {
+  background-color: #c0d8d8; /* Muted version of your primary color */
+  color: #708080; /* Muted text color */
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove hover/focus effects when disabled */
+.button:disabled:hover,
+.button[disabled]:hover,
+.button:disabled:focus,
+.button[disabled]:focus {
+  background-color: #c0d8d8;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Disabled flat button (if you have any) */
+.button-flat:disabled,
+.button-flat[disabled] {
+  background-color: transparent;
+  color: #a8c5c5; /* Using your --text-muted color */
+  border-color: #c0d8d8;
 }

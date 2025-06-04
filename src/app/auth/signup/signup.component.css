@@ -4,7 +4,7 @@
 }
 
 .signup-form .control {
-  margin-bottom: 2.5rem; /* Extra space for error messages */
+  margin-bottom: 3rem; /* Extra space for error messages */
 }
 
 .signup-form .control-row {
@@ -13,17 +13,6 @@
 
 .signup-form fieldset .control {
   margin-bottom: 2.5rem;
-}
-
-.signup-form .control-error {
-  position: absolute;
-  bottom: -2.25rem;
-  left: 0;
-  width: 100%;
-  background: rgba(255, 153, 102, 0.1);
-  padding: 0.5rem;
-  border-radius: 0 0 8px 8px;
-  border-top: none;
 }
 
 .signup-form input.invalid,
@@ -102,5 +91,5 @@
 
 .signup-form .checkbox-error {
   margin-top: 0.5rem;
-  margin-left: 2rem;
+  margin-left: 1rem;
 }

@@ -14,7 +14,14 @@ export class LoginComponent {
   onSubmit(
     formData: NgForm // first way to access NgForm Object (event)
   ) {
-    if (formData.form.invalid) return; 
+    Object.keys(formData.controls).forEach((field) => {
+      const control = formData.controls[field];
+      console.log(control);
+      
+      control.markAsTouched();
+    });
+
+    if (formData.invalid) return;
 
     const enteredEmail = formData.form.value.enail;
     const enteredPassword = formData.form.value.password;

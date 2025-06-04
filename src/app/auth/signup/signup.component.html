@@ -14,10 +14,10 @@
           #email="ngModel"
           required 
           email
-          [class.invalid]="email.invalid && (email.dirty || email.touched)"
+          [class.invalid]="email.invalid && email.touched"
         />
       </div>
-      @if (email.invalid && (email.dirty || email.touched)) {
+      @if (email.invalid && email.touched) {
         <div class="control-error">
           @if (email.errors?.['required']) {
             <span>Email is required</span>
@@ -41,10 +41,10 @@
             #password="ngModel"
             required
             minlength="8"
-            [class.invalid]="password.invalid && (password.dirty || password.touched)"
+            [class.invalid]="password.invalid && password.touched"
           />
         </div>
-        @if (password.invalid && (password.dirty || password.touched)) {
+        @if (password.invalid && password.touched) {
           <div class="control-error">
             @if (password.errors?.['required']) {
               <span>Password is required</span>
@@ -66,10 +66,10 @@
             ngModel
             #confirmPassword="ngModel"
             required
-            [class.invalid]="(confirmPassword.invalid || signupForm.value.password !== signupForm.value.confirmPassword) && (confirmPassword.dirty || confirmPassword.touched)"
+            [class.invalid]="(confirmPassword.invalid || signupForm.value.password !== signupForm.value.confirmPassword) && confirmPassword.touched"
           />
         </div>
-        @if (confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)) {
+        @if (confirmPassword.invalid && confirmPassword.touched) {
           <div class="control-error">
             @if (confirmPassword.errors?.['required']) {
               <span>Please confirm your password</span>
@@ -99,10 +99,10 @@
             ngModel
             #firstName="ngModel"
             required
-            [class.invalid]="firstName.invalid && (firstName.dirty || firstName.touched)"
+            [class.invalid]="firstName.invalid && firstName.touched"
           />
         </div>
-        @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
+        @if (firstName.invalid && firstName.touched) {
           <div class="control-error">
             <span>First name is required</span>
           </div>
@@ -119,10 +119,10 @@
             ngModel
             #lastName="ngModel"
             required
-            [class.invalid]="lastName.invalid && (lastName.dirty || lastName.touched)"
+            [class.invalid]="lastName.invalid && lastName.touched"
           />
         </div>
-        @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
+        @if (lastName.invalid && lastName.touched) {
           <div class="control-error">
             <span>Last name is required</span>
           </div>
@@ -146,10 +146,10 @@
               ngModel
               #street="ngModel"
               required
-              [class.invalid]="street.invalid && (street.dirty || street.touched)"
+              [class.invalid]="street.invalid && street.touched"
             />
           </div>
-          @if (street.invalid && (street.dirty || street.touched)) {
+          @if (street.invalid && street.touched) {
             <div class="control-error">
               <span>Street is required</span>
             </div>
@@ -166,10 +166,10 @@
               ngModel
               #number="ngModel"
               required
-              [class.invalid]="number.invalid && (number.dirty || number.touched)"
+              [class.invalid]="number.invalid && number.touched"
             />
           </div>
-          @if (number.invalid && (number.dirty || number.touched)) {
+          @if (number.invalid && number.touched) {
             <div class="control-error">
               <span>Number is required</span>
             </div>
@@ -188,10 +188,10 @@
               ngModel
               #postalCode="ngModel"
               required
-              [class.invalid]="postalCode.invalid && (postalCode.dirty || postalCode.touched)"
+              [class.invalid]="postalCode.invalid && postalCode.touched"
             />
           </div>
-          @if (postalCode.invalid && (postalCode.dirty || postalCode.touched)) {
+          @if (postalCode.invalid && postalCode.touched) {
             <div class="control-error">
               <span>Postal code is required</span>
             </div>
@@ -208,10 +208,10 @@
               ngModel
               #city="ngModel"
               required
-              [class.invalid]="city.invalid && (city.dirty || city.touched)"
+              [class.invalid]="city.invalid && city.touched"
             />
           </div>
-          @if (city.invalid && (city.dirty || city.touched)) {
+          @if (city.invalid && city.touched) {
             <div class="control-error">
               <span>City is required</span>
             </div>
@@ -234,7 +234,7 @@
             ngModel
             #role="ngModel"
             required
-            [class.invalid]="role.invalid && (role.dirty || role.touched)"
+            [class.invalid]="role.invalid && role.touched"
           >
             <option value="">Select your role</option>
             <option value="student">Student</option>
@@ -244,7 +244,7 @@
             <option value="other">Other</option>
           </select>
         </div>
-        @if (role.invalid && (role.dirty || role.touched)) {
+        @if (role.invalid && role.touched) {
           <div class="control-error">
             <span>Please select your role</span>
           </div>
@@ -301,12 +301,12 @@
           ngModel
           #terms="ngModel"
           required
-          [class.invalid]="terms.invalid && (terms.dirty || terms.touched)"
+          [class.invalid]="terms.invalid && terms.touched"
         />
         I agree to the terms and conditions
       </label>
-      @if (terms.invalid && (terms.dirty || terms.touched)) {
-        <div class="control-error">
+      @if (terms.invalid && terms.touched) {
+        <div class="checkbox-error">
           <span>You must accept the terms and conditions</span>
         </div>
       }
