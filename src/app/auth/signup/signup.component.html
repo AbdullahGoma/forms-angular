@@ -1,79 +1,221 @@
-<form>
+<form #signupForm="ngForm" (ngSubmit)="onSignup(signupForm)" class="signup-form">
   <h2>Welcome on board!</h2>
   <p>We just need a little bit of data from you to get you started 🚀</p>
 
-  <div class="control">
-    <label for="email">Email</label>
-    <input id="email" type="email" name="email" />
-  </div>
-
-  <div class="control-row">
+  <div class="form-group">
     <div class="control">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        name="password"
-      />
+      <label for="email">Email</label>
+      <div class="input-wrapper">
+        <input 
+          id="email" 
+          type="email" 
+          name="email" 
+          ngModel 
+          #email="ngModel"
+          required 
+          email
+          [class.invalid]="email.invalid && (email.dirty || email.touched)"
+        />
+      </div>
+      @if (email.invalid && (email.dirty || email.touched)) {
+        <div class="control-error">
+          @if (email.errors?.['required']) {
+            <span>Email is required</span>
+          }
+          @if (email.errors?.['email']) {
+            <span>Please enter a valid email address</span>
+          }
+        </div>
+      }
     </div>
 
-    <div class="control">
-      <label for="confirm-password">Confirm Password</label>
-      <input
-        id="confirm-password"
-        type="password"
-        name="confirm-password"
-      />
+    <div class="control-row">
+      <div class="control">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            ngModel
+            #password="ngModel"
+            required
+            minlength="8"
+            [class.invalid]="password.invalid && (password.dirty || password.touched)"
+          />
+        </div>
+        @if (password.invalid && (password.dirty || password.touched)) {
+          <div class="control-error">
+            @if (password.errors?.['required']) {
+              <span>Password is required</span>
+            }
+            @if (password.errors?.['minlength']) {
+              <span>Password must be at least 8 characters</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="control">
+        <label for="confirm-password">Confirm Password</label>
+        <div class="input-wrapper">
+          <input
+            id="confirm-password"
+            type="password"
+            name="confirmPassword"
+            ngModel
+            #confirmPassword="ngModel"
+            required
+            [class.invalid]="(confirmPassword.invalid || signupForm.value.password !== signupForm.value.confirmPassword) && (confirmPassword.dirty || confirmPassword.touched)"
+          />
+        </div>
+        @if (confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)) {
+          <div class="control-error">
+            @if (confirmPassword.errors?.['required']) {
+              <span>Please confirm your password</span>
+            }
+          </div>
+        }
+        @if (signupForm.value.password && signupForm.value.confirmPassword && signupForm.value.password !== signupForm.value.confirmPassword && confirmPassword.touched) {
+          <div class="control-error">
+            <span>Passwords do not match</span>
+          </div>
+        }
+      </div>
     </div>
   </div>
 
   <hr />
 
-  <div>
+  <div class="form-group">
     <div class="control-row">
       <div class="control">
         <label for="first-name">First Name</label>
-        <input
-          type="text"
-          id="first-name"
-          name="first-name"
-        />
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="first-name" 
+            name="firstName" 
+            ngModel
+            #firstName="ngModel"
+            required
+            [class.invalid]="firstName.invalid && (firstName.dirty || firstName.touched)"
+          />
+        </div>
+        @if (firstName.invalid && (firstName.dirty || firstName.touched)) {
+          <div class="control-error">
+            <span>First name is required</span>
+          </div>
+        }
       </div>
 
       <div class="control">
         <label for="last-name">Last Name</label>
-        <input
-          type="text"
-          id="last-name"
-          name="last-name"
-        />
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="last-name" 
+            name="lastName" 
+            ngModel
+            #lastName="ngModel"
+            required
+            [class.invalid]="lastName.invalid && (lastName.dirty || lastName.touched)"
+          />
+        </div>
+        @if (lastName.invalid && (lastName.dirty || lastName.touched)) {
+          <div class="control-error">
+            <span>Last name is required</span>
+          </div>
+        }
       </div>
     </div>
+  </div>
 
+  <div class="form-group">
     <fieldset>
       <legend>Your Address</legend>
 
       <div class="control-row">
         <div class="control">
           <label for="street">Street</label>
-          <input type="text" id="street" name="street" />
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="street" 
+              name="street" 
+              ngModel
+              #street="ngModel"
+              required
+              [class.invalid]="street.invalid && (street.dirty || street.touched)"
+            />
+          </div>
+          @if (street.invalid && (street.dirty || street.touched)) {
+            <div class="control-error">
+              <span>Street is required</span>
+            </div>
+          }
         </div>
 
         <div class="control">
           <label for="number">Number</label>
-          <input type="text" id="number" name="number" />
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="number" 
+              name="number" 
+              ngModel
+              #number="ngModel"
+              required
+              [class.invalid]="number.invalid && (number.dirty || number.touched)"
+            />
+          </div>
+          @if (number.invalid && (number.dirty || number.touched)) {
+            <div class="control-error">
+              <span>Number is required</span>
+            </div>
+          }
         </div>
       </div>
 
       <div class="control-row">
         <div class="control">
           <label for="postal-code">Postal Code</label>
-          <input type="text" id="postal-code" name="postal-code" />
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="postal-code" 
+              name="postalCode" 
+              ngModel
+              #postalCode="ngModel"
+              required
+              [class.invalid]="postalCode.invalid && (postalCode.dirty || postalCode.touched)"
+            />
+          </div>
+          @if (postalCode.invalid && (postalCode.dirty || postalCode.touched)) {
+            <div class="control-error">
+              <span>Postal code is required</span>
+            </div>
+          }
         </div>
 
         <div class="control">
           <label for="city">City</label>
-          <input type="text" id="city" name="city" />
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="city" 
+              name="city" 
+              ngModel
+              #city="ngModel"
+              required
+              [class.invalid]="city.invalid && (city.dirty || city.touched)"
+            />
+          </div>
+          @if (city.invalid && (city.dirty || city.touched)) {
+            <div class="control-error">
+              <span>City is required</span>
+            </div>
+          }
         </div>
       </div>
     </fieldset>
@@ -81,67 +223,104 @@
 
   <hr />
 
-  <div class="control-row">
-    <div class="control">
-      <label for="role">What best describes your role?</label>
-      <select id="role" name="role">
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-        <option value="employee">Employee</option>
-        <option value="founder">Founder</option>
-        <option value="other">Other</option>
-      </select>
+  <div class="form-group">
+    <div class="control-row">
+      <div class="control">
+        <label for="role">What best describes your role?</label>
+        <div class="input-wrapper">
+          <select 
+            id="role" 
+            name="role" 
+            ngModel
+            #role="ngModel"
+            required
+            [class.invalid]="role.invalid && (role.dirty || role.touched)"
+          >
+            <option value="">Select your role</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="employee">Employee</option>
+            <option value="founder">Founder</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        @if (role.invalid && (role.dirty || role.touched)) {
+          <div class="control-error">
+            <span>Please select your role</span>
+          </div>
+        }
+      </div>
     </div>
   </div>
 
-  <fieldset>
-    <legend>How did you find us?</legend>
-    <div class="control">
-      <input
-        type="checkbox"
-        id="google"
-        name="acquisition"
-        value="google"
-      />
-      <label for="google">Google</label>
-    </div>
+  <div class="form-group">
+    <fieldset>
+      <legend>How did you find us?</legend>
+      <div class="control">
+        <input
+          type="checkbox"
+          id="google"
+          name="google"
+          ngModel
+          #google="ngModel"
+        />
+        <label for="google">Google</label>
+      </div>
 
-    <div class="control">
-      <input
-        type="checkbox"
-        id="friend"
-        name="acquisition"
-        value="friend"
-      />
-      <label for="friend">Referred by friend</label>
-    </div>
+      <div class="control">
+        <input
+          type="checkbox"
+          id="friend"
+          name="friend"
+          ngModel
+          #friend="ngModel"
+        />
+        <label for="friend">Referred by friend</label>
+      </div>
 
-    <div class="control">
-      <input
-        type="checkbox"
-        id="other"
-        name="acquisition"
-        value="other"
-      />
-      <label for="other">Other</label>
-    </div>
-  </fieldset>
+      <div class="control">
+        <input
+          type="checkbox"
+          id="other-source"
+          name="otherSource"
+          ngModel
+          #otherSource="ngModel"
+        />
+        <label for="other-source">Other</label>
+      </div>
+    </fieldset>
+  </div>
 
-  <div class="control-row">
+  <div class="form-group">
     <div class="control">
       <label for="terms-and-conditions">
         <input
           type="checkbox"
           id="terms-and-conditions"
           name="terms"
+          ngModel
+          #terms="ngModel"
+          required
+          [class.invalid]="terms.invalid && (terms.dirty || terms.touched)"
         />
         I agree to the terms and conditions
       </label>
+      @if (terms.invalid && (terms.dirty || terms.touched)) {
+        <div class="control-error">
+          <span>You must accept the terms and conditions</span>
+        </div>
+      }
     </div>
   </div>
 
-  <p class="form-actions">
+  <div class="form-actions">
     <button type="reset" class="button button-flat">Reset</button>
-    <button type="submit" class="button">Sign up</button>
-  </p>
+    <button type="submit" class="button" [disabled]="signupForm.invalid">Sign up</button>
+  </div>
+
+  @if (signupForm.submitted && signupForm.invalid) {
+    <div class="control-error form-error">
+      Please fix the errors above before submitting.
+    </div>
+  }
 </form>

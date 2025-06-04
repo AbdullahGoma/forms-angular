@@ -1,0 +1,26 @@
+/* Login Form Styles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.login-form .control {
+  margin-bottom: 2.5rem; /* Extra space for error messages */
+}
+
+.login-form .form-actions {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .login-fields {
+    grid-template-columns: 1fr;
+  }
+}

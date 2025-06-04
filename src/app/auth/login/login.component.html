@@ -1,17 +1,68 @@
-<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="login-form">
   <h2>Login</h2>
+  <p>Welcome back! Please enter your credentials to login.</p>
 
-  <div class="control-row">
+  <div class="login-fields">
     <div class="control no-margin">
       <label for="email">Email</label>
-      <input id="email" type="email" name="email" ngModel />
+      <div class="input-wrapper">
+        <input 
+          id="email" 
+          type="email" 
+          name="email" 
+          ngModel 
+          #email="ngModel"
+          required 
+          email 
+          [class.invalid]="email.invalid && (email.dirty || email.touched)"
+        />
+      </div>
+      @if (email.invalid && (email.dirty || email.touched)) {
+        <div class="control-error">
+          @if (email.errors?.['required']) {
+            <span>Email is required</span>
+          }
+          @if (email.errors?.['email']) {
+            <span>Please enter a valid email address</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="control no-margin">
       <label for="password">Password</label>
-      <input id="password" type="password" name="password" ngModel />
+      <div class="input-wrapper">
+        <input
+          id="password"
+          type="password"
+          name="password"
+          ngModel
+          #password="ngModel"
+          required
+          minlength="8"
+          [class.invalid]="password.invalid && (password.dirty || password.touched)"
+        />
+      </div>
+      @if (password.invalid && (password.dirty || password.touched)) {
+        <div class="control-error">
+          @if (password.errors?.['required']) {
+            <span>Password is required</span>
+          }
+          @if (password.errors?.['minlength']) {
+            <span>Password must be at least 8 characters</span>
+          }
+        </div>
+      }
     </div>
-
-    <button class="button">Login</button>
   </div>
+
+  <div class="form-actions">
+    <button class="button" [disabled]="form.invalid">Login</button>
+  </div>
+  
+  @if (form.submitted && form.invalid) {
+    <div class="control-error form-error">
+      Please fix the errors above before submitting.
+    </div>
+  }
 </form>
