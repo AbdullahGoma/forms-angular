@@ -18,10 +18,14 @@ import {
 })
 export class LoginComponent {
   reactiveForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [
+      Validators.required,
+      this.emailFormatValidator,
+    ]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
+      this.passwordStrengthValidator,
     ]),
     phone: new FormControl('', [
       Validators.required,
@@ -29,7 +33,6 @@ export class LoginComponent {
     ]),
   });
 
-  // Cleaner Approach
   // Form control getters
   get email() {
     return this.reactiveForm.get('email');
@@ -43,13 +46,15 @@ export class LoginComponent {
 
   // Validation state getters
   get emailIsInvalid() {
-    return this.email?.invalid && this.email?.touched;
+    return this.email?.invalid && this.email?.touched && this.email?.dirty;
   }
   get passwordIsInvalid() {
-    return this.password?.invalid && this.password?.touched;
+    return (
+      this.password?.invalid && this.password?.touched && this.password?.dirty
+    );
   }
   get phoneIsInvalid() {
-    return this.phone?.invalid && this.phone?.touched;
+    return this.phone?.invalid && this.phone?.touched && this.phone?.dirty;
   }
 
   // Combined form state
@@ -66,11 +71,38 @@ export class LoginComponent {
     );
   }
 
-  onSubmit() {
-    if (this.reactiveForm.valid) {
-      console.log('Form submitted:', this.reactiveForm.value);
-      // Handle form submission
-    }
+  // Custom password validator
+  private passwordStrengthValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value || '';
+
+    // Check for at least one uppercase letter
+    const hasUpperCase = /[A-Z]/.test(value);
+    // Check for at least one lowercase letter
+    const hasLowerCase = /[a-z]/.test(value);
+    // Check for at least one number
+    const hasNumber = /[0-9]/.test(value);
+    // Check for at least one special character (question mark, exclamation, etc.)
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value);
+
+    const errors: ValidationErrors = {};
+
+    if (!hasUpperCase) errors['missingUpperCase'] = true;
+    if (!hasLowerCase) errors['missingLowerCase'] = true;
+    if (!hasNumber) errors['missingNumber'] = true;
+    if (!hasSpecialChar) errors['missingSpecialChar'] = true;
+
+    return Object.keys(errors).length ? errors : null;
+  }
+
+  // Custom email validator
+  private emailFormatValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value || '';
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(value) ? null : { invalidEmail: true };
   }
 
   private egyptianPhoneValidator(
@@ -79,5 +111,12 @@ export class LoginComponent {
     const regex = /^01[0125][0-9]{8}$/;
     const value = control.value || '';
     return regex.test(value) ? null : { egyptianPhone: true };
+  }
+
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      console.log('Form submitted:', this.reactiveForm.value);
+      // Handle form submission
+    }
   }
 }
