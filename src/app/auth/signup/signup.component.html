@@ -1,6 +1,6 @@
 <form
-  #signupForm="ngForm"
-  (ngSubmit)="onSignup(signupForm)"
+  [formGroup]="signupForm"
+  (ngSubmit)="onSignup()"
   class="signup-form"
 >
   <h2>Welcome on board!</h2>
@@ -13,19 +13,15 @@
         <input
           id="email"
           type="email"
-          name="email"
-          ngModel
-          #email="ngModel"
-          required
-          email
-          [class.invalid]="email.invalid && email.touched"
+          formControlName="email"
+          [class.invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
         />
       </div>
-      @if (email.invalid && email.touched) {
+      @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
       <div class="control-error">
-        @if (email.errors?.['required']) {
+        @if (signupForm.get('email')?.errors?.['required']) {
         <span>Email is required</span>
-        } @if (email.errors?.['email']) {
+        } @if (signupForm.get('email')?.errors?.['email']) {
         <span>Please enter a valid email address</span>
         }
       </div>
@@ -39,19 +35,15 @@
           <input
             id="password"
             type="password"
-            name="password"
-            ngModel
-            #password="ngModel"
-            required
-            minlength="8"
-            [class.invalid]="password.invalid && password.touched"
+            formControlName="password"
+            [class.invalid]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
           />
         </div>
-        @if (password.invalid && password.touched) {
+        @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
         <div class="control-error">
-          @if (password.errors?.['required']) {
+          @if (signupForm.get('password')?.errors?.['required']) {
           <span>Password is required</span>
-          } @if (password.errors?.['minlength']) {
+          } @if (signupForm.get('password')?.errors?.['minlength']) {
           <span>Password must be at least 8 characters</span>
           }
         </div>
@@ -64,27 +56,24 @@
           <input
             id="confirm-password"
             type="password"
-            name="confirmPassword"
-            ngModel
-            #confirmPassword="ngModel"
-            required
+            formControlName="confirmPassword"
             [class.invalid]="
-              (confirmPassword.invalid ||
+              (signupForm.get('confirmPassword')?.invalid ||
                 signupForm.value.password !==
                   signupForm.value.confirmPassword) &&
-              confirmPassword.touched
+              signupForm.get('confirmPassword')?.touched
             "
           />
         </div>
-        @if (confirmPassword.invalid && confirmPassword.touched) {
+        @if (signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched) {
         <div class="control-error">
-          @if (confirmPassword.errors?.['required']) {
+          @if (signupForm.get('confirmPassword')?.errors?.['required']) {
           <span>Please confirm your password</span>
           }
         </div>
         } @if (signupForm.value.password && signupForm.value.confirmPassword &&
         signupForm.value.password !== signupForm.value.confirmPassword &&
-        confirmPassword.touched) {
+        signupForm.get('confirmPassword')?.touched) {
         <div class="control-error">
           <span>Passwords do not match</span>
         </div>
@@ -103,14 +92,11 @@
           <input
             type="text"
             id="first-name"
-            name="firstName"
-            ngModel
-            #firstName="ngModel"
-            required
-            [class.invalid]="firstName.invalid && firstName.touched"
+            formControlName="firstName"
+            [class.invalid]="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched"
           />
         </div>
-        @if (firstName.invalid && firstName.touched) {
+        @if (signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched) {
         <div class="control-error">
           <span>First name is required</span>
         </div>
@@ -123,14 +109,11 @@
           <input
             type="text"
             id="last-name"
-            name="lastName"
-            ngModel
-            #lastName="ngModel"
-            required
-            [class.invalid]="lastName.invalid && lastName.touched"
+            formControlName="lastName"
+            [class.invalid]="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched"
           />
         </div>
-        @if (lastName.invalid && lastName.touched) {
+        @if (signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched) {
         <div class="control-error">
           <span>Last name is required</span>
         </div>
@@ -150,14 +133,11 @@
             <input
               type="text"
               id="street"
-              name="street"
-              ngModel
-              #street="ngModel"
-              required
-              [class.invalid]="street.invalid && street.touched"
+              formControlName="street"
+              [class.invalid]="signupForm.get('street')?.invalid && signupForm.get('street')?.touched"
             />
           </div>
-          @if (street.invalid && street.touched) {
+          @if (signupForm.get('street')?.invalid && signupForm.get('street')?.touched) {
           <div class="control-error">
             <span>Street is required</span>
           </div>
@@ -170,14 +150,11 @@
             <input
               type="text"
               id="number"
-              name="number"
-              ngModel
-              #number="ngModel"
-              required
-              [class.invalid]="number.invalid && number.touched"
+              formControlName="number"
+              [class.invalid]="signupForm.get('number')?.invalid && signupForm.get('number')?.touched"
             />
           </div>
-          @if (number.invalid && number.touched) {
+          @if (signupForm.get('number')?.invalid && signupForm.get('number')?.touched) {
           <div class="control-error">
             <span>Number is required</span>
           </div>
@@ -192,14 +169,11 @@
             <input
               type="text"
               id="postal-code"
-              name="postalCode"
-              ngModel
-              #postalCode="ngModel"
-              required
-              [class.invalid]="postalCode.invalid && postalCode.touched"
+              formControlName="postalCode"
+              [class.invalid]="signupForm.get('postalCode')?.invalid && signupForm.get('postalCode')?.touched"
             />
           </div>
-          @if (postalCode.invalid && postalCode.touched) {
+          @if (signupForm.get('postalCode')?.invalid && signupForm.get('postalCode')?.touched) {
           <div class="control-error">
             <span>Postal code is required</span>
           </div>
@@ -212,14 +186,11 @@
             <input
               type="text"
               id="city"
-              name="city"
-              ngModel
-              #city="ngModel"
-              required
-              [class.invalid]="city.invalid && city.touched"
+              formControlName="city"
+              [class.invalid]="signupForm.get('city')?.invalid && signupForm.get('city')?.touched"
             />
           </div>
-          @if (city.invalid && city.touched) {
+          @if (signupForm.get('city')?.invalid && signupForm.get('city')?.touched) {
           <div class="control-error">
             <span>City is required</span>
           </div>
@@ -238,11 +209,8 @@
         <div class="input-wrapper">
           <select
             id="role"
-            name="role"
-            ngModel
-            #role="ngModel"
-            required
-            [class.invalid]="role.invalid && role.touched"
+            formControlName="role"
+            [class.invalid]="signupForm.get('role')?.invalid && signupForm.get('role')?.touched"
           >
             <option value="">Select your role</option>
             <option value="student">Student</option>
@@ -252,7 +220,7 @@
             <option value="other">Other</option>
           </select>
         </div>
-        @if (role.invalid && role.touched) {
+        @if (signupForm.get('role')?.invalid && signupForm.get('role')?.touched) {
         <div class="control-error">
           <span>Please select your role</span>
         </div>
@@ -268,9 +236,7 @@
         <input
           type="checkbox"
           id="google"
-          name="google"
-          ngModel
-          #google="ngModel"
+          formControlName="google"
         />
         <label for="google">Google</label>
       </div>
@@ -279,9 +245,7 @@
         <input
           type="checkbox"
           id="friend"
-          name="friend"
-          ngModel
-          #friend="ngModel"
+          formControlName="friend"
         />
         <label for="friend">Referred by friend</label>
       </div>
@@ -290,9 +254,7 @@
         <input
           type="checkbox"
           id="other-source"
-          name="otherSource"
-          ngModel
-          #otherSource="ngModel"
+          formControlName="otherSource"
         />
         <label for="other-source">Other</label>
       </div>
@@ -305,15 +267,12 @@
         <input
           type="checkbox"
           id="terms-and-conditions"
-          name="terms"
-          ngModel
-          #terms="ngModel"
-          required
-          [class.invalid]="terms.invalid && terms.touched"
+          formControlName="terms"
+          [class.invalid]="signupForm.get('terms')?.invalid && signupForm.get('terms')?.touched"
         />
         I agree to the terms and conditions
       </label>
-      @if (terms.invalid && terms.touched) {
+      @if (signupForm.get('terms')?.invalid && signupForm.get('terms')?.touched) {
       <div class="checkbox-error">
         <span>You must accept the terms and conditions</span>
       </div>
@@ -321,8 +280,8 @@
     </div>
   </div>
 
-  @if ((email.touched && password.touched && confirmPassword.touched &&
-  firstName.touched && lastName.touched) &&
+  @if ((signupForm.get('email')?.touched && signupForm.get('password')?.touched && signupForm.get('confirmPassword')?.touched &&
+  signupForm.get('firstName')?.touched && signupForm.get('lastName')?.touched) &&
   signupForm.invalid) {
   <div class="form-error">Please fix the errors above before submitting.</div>
   }
