@@ -1,4 +1,8 @@
-<form #signupForm="ngForm" (ngSubmit)="onSignup(signupForm)" class="signup-form">
+<form
+  #signupForm="ngForm"
+  (ngSubmit)="onSignup(signupForm)"
+  class="signup-form"
+>
   <h2>Welcome on board!</h2>
   <p>We just need a little bit of data from you to get you started 🚀</p>
 
@@ -6,26 +10,25 @@
     <div class="control">
       <label for="email">Email</label>
       <div class="input-wrapper">
-        <input 
-          id="email" 
-          type="email" 
-          name="email" 
-          ngModel 
+        <input
+          id="email"
+          type="email"
+          name="email"
+          ngModel
           #email="ngModel"
-          required 
+          required
           email
           [class.invalid]="email.invalid && email.touched"
         />
       </div>
       @if (email.invalid && email.touched) {
-        <div class="control-error">
-          @if (email.errors?.['required']) {
-            <span>Email is required</span>
-          }
-          @if (email.errors?.['email']) {
-            <span>Please enter a valid email address</span>
-          }
-        </div>
+      <div class="control-error">
+        @if (email.errors?.['required']) {
+        <span>Email is required</span>
+        } @if (email.errors?.['email']) {
+        <span>Please enter a valid email address</span>
+        }
+      </div>
       }
     </div>
 
@@ -45,14 +48,13 @@
           />
         </div>
         @if (password.invalid && password.touched) {
-          <div class="control-error">
-            @if (password.errors?.['required']) {
-              <span>Password is required</span>
-            }
-            @if (password.errors?.['minlength']) {
-              <span>Password must be at least 8 characters</span>
-            }
-          </div>
+        <div class="control-error">
+          @if (password.errors?.['required']) {
+          <span>Password is required</span>
+          } @if (password.errors?.['minlength']) {
+          <span>Password must be at least 8 characters</span>
+          }
+        </div>
         }
       </div>
 
@@ -66,20 +68,26 @@
             ngModel
             #confirmPassword="ngModel"
             required
-            [class.invalid]="(confirmPassword.invalid || signupForm.value.password !== signupForm.value.confirmPassword) && confirmPassword.touched"
+            [class.invalid]="
+              (confirmPassword.invalid ||
+                signupForm.value.password !==
+                  signupForm.value.confirmPassword) &&
+              confirmPassword.touched
+            "
           />
         </div>
         @if (confirmPassword.invalid && confirmPassword.touched) {
-          <div class="control-error">
-            @if (confirmPassword.errors?.['required']) {
-              <span>Please confirm your password</span>
-            }
-          </div>
-        }
-        @if (signupForm.value.password && signupForm.value.confirmPassword && signupForm.value.password !== signupForm.value.confirmPassword && confirmPassword.touched) {
-          <div class="control-error">
-            <span>Passwords do not match</span>
-          </div>
+        <div class="control-error">
+          @if (confirmPassword.errors?.['required']) {
+          <span>Please confirm your password</span>
+          }
+        </div>
+        } @if (signupForm.value.password && signupForm.value.confirmPassword &&
+        signupForm.value.password !== signupForm.value.confirmPassword &&
+        confirmPassword.touched) {
+        <div class="control-error">
+          <span>Passwords do not match</span>
+        </div>
         }
       </div>
     </div>
@@ -92,10 +100,10 @@
       <div class="control">
         <label for="first-name">First Name</label>
         <div class="input-wrapper">
-          <input 
-            type="text" 
-            id="first-name" 
-            name="firstName" 
+          <input
+            type="text"
+            id="first-name"
+            name="firstName"
             ngModel
             #firstName="ngModel"
             required
@@ -103,19 +111,19 @@
           />
         </div>
         @if (firstName.invalid && firstName.touched) {
-          <div class="control-error">
-            <span>First name is required</span>
-          </div>
+        <div class="control-error">
+          <span>First name is required</span>
+        </div>
         }
       </div>
 
       <div class="control">
         <label for="last-name">Last Name</label>
         <div class="input-wrapper">
-          <input 
-            type="text" 
-            id="last-name" 
-            name="lastName" 
+          <input
+            type="text"
+            id="last-name"
+            name="lastName"
             ngModel
             #lastName="ngModel"
             required
@@ -123,9 +131,9 @@
           />
         </div>
         @if (lastName.invalid && lastName.touched) {
-          <div class="control-error">
-            <span>Last name is required</span>
-          </div>
+        <div class="control-error">
+          <span>Last name is required</span>
+        </div>
         }
       </div>
     </div>
@@ -139,10 +147,10 @@
         <div class="control">
           <label for="street">Street</label>
           <div class="input-wrapper">
-            <input 
-              type="text" 
-              id="street" 
-              name="street" 
+            <input
+              type="text"
+              id="street"
+              name="street"
               ngModel
               #street="ngModel"
               required
@@ -150,19 +158,19 @@
             />
           </div>
           @if (street.invalid && street.touched) {
-            <div class="control-error">
-              <span>Street is required</span>
-            </div>
+          <div class="control-error">
+            <span>Street is required</span>
+          </div>
           }
         </div>
 
         <div class="control">
           <label for="number">Number</label>
           <div class="input-wrapper">
-            <input 
-              type="text" 
-              id="number" 
-              name="number" 
+            <input
+              type="text"
+              id="number"
+              name="number"
               ngModel
               #number="ngModel"
               required
@@ -170,9 +178,9 @@
             />
           </div>
           @if (number.invalid && number.touched) {
-            <div class="control-error">
-              <span>Number is required</span>
-            </div>
+          <div class="control-error">
+            <span>Number is required</span>
+          </div>
           }
         </div>
       </div>
@@ -181,10 +189,10 @@
         <div class="control">
           <label for="postal-code">Postal Code</label>
           <div class="input-wrapper">
-            <input 
-              type="text" 
-              id="postal-code" 
-              name="postalCode" 
+            <input
+              type="text"
+              id="postal-code"
+              name="postalCode"
               ngModel
               #postalCode="ngModel"
               required
@@ -192,19 +200,19 @@
             />
           </div>
           @if (postalCode.invalid && postalCode.touched) {
-            <div class="control-error">
-              <span>Postal code is required</span>
-            </div>
+          <div class="control-error">
+            <span>Postal code is required</span>
+          </div>
           }
         </div>
 
         <div class="control">
           <label for="city">City</label>
           <div class="input-wrapper">
-            <input 
-              type="text" 
-              id="city" 
-              name="city" 
+            <input
+              type="text"
+              id="city"
+              name="city"
               ngModel
               #city="ngModel"
               required
@@ -212,9 +220,9 @@
             />
           </div>
           @if (city.invalid && city.touched) {
-            <div class="control-error">
-              <span>City is required</span>
-            </div>
+          <div class="control-error">
+            <span>City is required</span>
+          </div>
           }
         </div>
       </div>
@@ -228,9 +236,9 @@
       <div class="control">
         <label for="role">What best describes your role?</label>
         <div class="input-wrapper">
-          <select 
-            id="role" 
-            name="role" 
+          <select
+            id="role"
+            name="role"
             ngModel
             #role="ngModel"
             required
@@ -245,9 +253,9 @@
           </select>
         </div>
         @if (role.invalid && role.touched) {
-          <div class="control-error">
-            <span>Please select your role</span>
-          </div>
+        <div class="control-error">
+          <span>Please select your role</span>
+        </div>
         }
       </div>
     </div>
@@ -306,21 +314,23 @@
         I agree to the terms and conditions
       </label>
       @if (terms.invalid && terms.touched) {
-        <div class="checkbox-error">
-          <span>You must accept the terms and conditions</span>
-        </div>
+      <div class="checkbox-error">
+        <span>You must accept the terms and conditions</span>
+      </div>
       }
     </div>
   </div>
 
-  @if (signupForm.touched && signupForm.invalid) {
-    <div class="form-error">
-      Please fix the errors above before submitting.
-    </div>
+  @if ((email.touched && password.touched && confirmPassword.touched &&
+  firstName.touched && lastName.touched) &&
+  signupForm.invalid) {
+  <div class="form-error">Please fix the errors above before submitting.</div>
   }
 
   <div class="form-actions">
     <button type="reset" class="button button-flat">Reset</button>
-    <button type="submit" class="button" [disabled]="signupForm.invalid">Sign up</button>
+    <button type="submit" class="button" [disabled]="signupForm.invalid">
+      Sign up
+    </button>
   </div>
 </form>
