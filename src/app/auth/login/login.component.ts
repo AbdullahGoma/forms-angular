@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -12,6 +12,15 @@ import {
 } from '@angular/forms';
 import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 
+let initialEmail = '';
+let initialPhone = '';
+const savedForm = window.localStorage.getItem('saved-login-form');
+
+if (savedForm) {
+  const loadedForm = JSON.parse(savedForm);
+  initialEmail = loadedForm.email;
+  initialPhone = loadedForm.phone;
+}
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,9 +28,9 @@ import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   reactiveForm = new FormGroup({
-    email: new FormControl('', {
+    email: new FormControl(initialEmail, {
       validators: [Validators.required, this.emailFormatValidator],
       // asyncValidators: [this.checkEmailExists()],
       // updateOn: 'blur', // To ensure the correctness of what the user leaves the input
@@ -31,12 +40,39 @@ export class LoginComponent {
         Validators.required,
         Validators.minLength(8),
         this.passwordStrengthValidator,
-      ]}),
-    phone: new FormControl('', [
+      ],
+    }),
+    phone: new FormControl(initialPhone, [
       Validators.required,
       this.egyptianPhoneValidator,
     ]),
   });
+  private destroyRef = inject(DestroyRef);
+
+  ngOnInit() {
+    // const savedForm = window.localStorage.getItem('saved-login-form');
+
+    // if (savedForm) {
+    //   const loadedForm = JSON.parse(savedForm);
+    //   this.reactiveForm.patchValue({
+    //     email: loadedForm.email,
+    //     phone: loadedForm.phone
+    //   })
+    // }
+
+    // for reseting the form with values that user entered before reload page
+    const subscription = this.reactiveForm.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe({
+        next: (value) =>
+          window.localStorage.setItem(
+            'saved-login-form',
+            JSON.stringify({ email: value.email, phone: value.phone })
+          ),
+      });
+
+    this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
 
   // constructor(private http: HttpClient) {}
 
