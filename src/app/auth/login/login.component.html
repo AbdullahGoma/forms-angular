@@ -55,14 +55,14 @@
       }
     </div>
   </div>
+  
+  @if (form.touched && form.invalid) {
+    <div class="form-error">
+      Please fix the errors above before submitting.
+    </div>
+  }
 
   <div class="form-actions">
     <button class="button" [disabled]="form.invalid">Login</button>
   </div>
-  
-  @if (form.submitted && form.invalid) {
-    <div class="control-error form-error">
-      Please fix the errors above before submitting.
-    </div>
-  }
 </form>

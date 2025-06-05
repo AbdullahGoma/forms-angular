@@ -183,7 +183,7 @@ form p {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(20, 123, 115, 0.4),
-              0 4px 12px rgba(20, 123, 115, 0.2);
+    0 4px 12px rgba(20, 123, 115, 0.2);
   transform: translateY(-2px);
 }
 
@@ -407,7 +407,7 @@ legend {
   fieldset {
     padding: 1.25rem;
   }
-  
+
   legend {
     font-size: 1rem;
   }
@@ -450,7 +450,7 @@ legend {
     padding: 1rem;
     margin: 1rem 0;
   }
-  
+
   legend {
     font-size: 0.95rem;
   }
@@ -476,13 +476,13 @@ legend {
   border-radius: 0 0 6px 6px;
   position: absolute;
   width: 100%;
-  top: 100%; 
-  margin-top: -2px; 
+  top: 100%;
+  margin-top: -2px;
   left: 0;
   animation: fadeIn 0.2s ease-out;
-  line-height: 1.4; 
-  white-space: normal; 
-  min-height: 3rem; 
+  line-height: 1.4;
+  white-space: normal;
+  min-height: 3rem;
 }
 
 .control input.invalid,
@@ -520,7 +520,7 @@ legend {
   background: rgba(255, 153, 102, 0.1);
   border-left: 3px solid var(--error);
   border-radius: 6px;
-  margin-top: 1rem;
+  margin-top: 0.25rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;

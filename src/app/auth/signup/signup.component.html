@@ -313,14 +313,14 @@
     </div>
   </div>
 
+  @if (signupForm.touched && signupForm.invalid) {
+    <div class="form-error">
+      Please fix the errors above before submitting.
+    </div>
+  }
+
   <div class="form-actions">
     <button type="reset" class="button button-flat">Reset</button>
     <button type="submit" class="button" [disabled]="signupForm.invalid">Sign up</button>
   </div>
-
-  @if (signupForm.submitted && signupForm.invalid) {
-    <div class="control-error form-error">
-      Please fix the errors above before submitting.
-    </div>
-  }
 </form>
