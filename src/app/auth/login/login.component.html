@@ -1,4 +1,4 @@
-<form #form="ngForm" (ngSubmit)="onSubmit(form)" class="login-form">
+<form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()" class="login-form">
   <h2>Login</h2>
   <p>Welcome back! Please enter your credentials to login.</p>
 
@@ -9,20 +9,16 @@
         <input 
           id="email" 
           type="email" 
-          name="email" 
-          ngModel 
-          #email="ngModel"
-          required 
-          email 
-          [class.invalid]="email.invalid && email.touched"
+          formControlName="email"
+          [class.invalid]="reactiveForm.get('email')?.invalid && reactiveForm.get('email')?.touched"
         />
       </div>
-      @if (email.invalid && email.touched) {
+      @if (reactiveForm.get('email')?.invalid && reactiveForm.get('email')?.touched) {
         <div class="control-error">
-          @if (email.errors?.['required']) {
+          @if (reactiveForm.get('email')?.errors?.['required']) {
             <span>Email is required</span>
           }
-          @if (email.errors?.['email']) {
+          @if (reactiveForm.get('email')?.errors?.['email']) {
             <span>Please enter a valid email address</span>
           }
         </div>
@@ -35,34 +31,56 @@
         <input
           id="password"
           type="password"
-          name="password"
-          ngModel
-          #password="ngModel"
-          required
-          minlength="8"
-          [class.invalid]="password.invalid && password.touched"
+          formControlName="password"
+          [class.invalid]="reactiveForm.get('password')?.invalid && reactiveForm.get('password')?.touched"
         />
       </div>
-      @if (password.invalid && password.touched) {
+      @if (reactiveForm.get('password')?.invalid && reactiveForm.get('password')?.touched) {
         <div class="control-error">
-          @if (password.errors?.['required']) {
+          @if (reactiveForm.get('password')?.errors?.['required']) {
             <span>Password is required</span>
           }
-          @if (password.errors?.['minlength']) {
+          @if (reactiveForm.get('password')?.errors?.['minlength']) {
             <span>Password must be at least 8 characters</span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="control no-margin">
+      <label for="phone">Phone Number</label>
+      <div class="input-wrapper">
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          [class.invalid]="reactiveForm.get('phone')?.invalid && reactiveForm.get('phone')?.touched"
+          placeholder="01XXXXXXXXX"
+        />
+      </div>
+      @if (reactiveForm.get('phone')?.invalid && reactiveForm.get('phone')?.touched) {
+        <div class="control-error">
+          @if (reactiveForm.get('phone')?.errors?.['required']) {
+            <span>Phone number is required</span>
+          }
+          @if (reactiveForm.get('phone')?.errors?.['egyptianPhone']) {
+            <span>Please enter a valid Egyptian phone number</span>
           }
         </div>
       }
     </div>
   </div>
   
-  @if (email.touched && email.dirty && email.invalid && password.touched && password.dirty && form.invalid) {
+  @if (reactiveForm.get('email')?.touched && reactiveForm.get('email')?.dirty && reactiveForm.get('email')?.invalid 
+      && reactiveForm.get('password')?.touched && reactiveForm.get('password')?.dirty 
+      && reactiveForm.get('phone')?.touched && reactiveForm.get('phone')?.dirty
+      && reactiveForm.invalid) {
     <div class="form-error">
       Please fix the errors above before submitting.
     </div>
   }
 
   <div class="form-actions">
-    <button class="button" [disabled]="form.invalid">Login</button>
+    <button type="submit" class="button" [disabled]="reactiveForm.invalid">Login</button>
   </div>
 </form>

@@ -1,81 +1,49 @@
+import { CommonModule } from '@angular/common';
 import {
-  afterNextRender,
   Component,
-  DestroyRef,
-  inject,
-  viewChild,
-  ViewChild,
 } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  @ViewChild('form') formDataByViewChild!: NgForm; // Second way to access NgForm Object
-  private form = viewChild.required<NgForm>('form');
-  private destroyRef = inject(DestroyRef);
+  reactiveForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    phone: new FormControl('', [
+      Validators.required,
+      this.egyptianPhoneValidator,
+    ]),
+  });
 
-  constructor() {
-    // Save the value entered by user even after page reloaded
-    afterNextRender(() => {
-      const savedForm = window.localStorage.getItem('save-login-form');
-
-      if (savedForm) {
-        const loadedForm = JSON.parse(savedForm);
-        const savedEmail = loadedForm.email;
-
-        setTimeout(() => {
-          this.form().setValue({
-            email: savedEmail,
-            password: '',
-          }); // this.form().controls['email'].setValue(savedEmail);
-        }, 1);
-      }
-
-      const subscription = this.form()
-        .valueChanges?.pipe(debounceTime(500))
-        .subscribe({
-          next: (value) =>
-            window.localStorage.setItem(
-              'save-login-form',
-              JSON.stringify({
-                email: value.email,
-              })
-            ),
-        });
-
-      this.destroyRef.onDestroy(() => subscription?.unsubscribe());
-    });
+  onSubmit() {
+    if (this.reactiveForm.valid) {
+      console.log('Form submitted:', this.reactiveForm.value);
+    }
   }
 
-  onSubmit(
-    formData: NgForm // first way to access NgForm Object (event)
-  ) {
-    Object.keys(formData.controls).forEach((field) => {
-      const control = formData.controls[field];
-      console.log(control);
-
-      control.markAsTouched();
-    });
-
-    if (formData.invalid) return;
-
-    const enteredEmail = formData.form.value.enail;
-    const enteredPassword = formData.form.value.password;
-
-    const enteredEmailByViewChild = this.formDataByViewChild.value.enail;
-    const enteredPasswordByViewChild = this.formDataByViewChild.value.password;
-
-    console.log(enteredEmail === enteredEmailByViewChild); // true
-    console.log(enteredPassword === enteredPasswordByViewChild); // true
-    console.log(formData.form);
-
-    formData.form.reset();
+  // control = new FormControl('', [Validators.required, egyptianPhoneValidator]);
+  // angular do egyptianPhoneValidator(control);
+  // phoneForm = new FormGroup({ phone: control });
+  egyptianPhoneValidator(control: AbstractControl): ValidationErrors | null {
+    const regex = /^01[0125][0-9]{8}$/;
+    const value = control.value || '';
+    return regex.test(value) ? null : { egyptianPhone: true };
   }
 }
