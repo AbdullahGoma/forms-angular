@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   AbstractControl,
@@ -7,7 +8,9 @@ import {
   ReactiveFormsModule,
   Validators,
   ValidationErrors,
+  AsyncValidatorFn,
 } from '@angular/forms';
+import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -18,20 +21,38 @@ import {
 })
 export class LoginComponent {
   reactiveForm = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      this.emailFormatValidator,
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      this.passwordStrengthValidator,
-    ]),
+    email: new FormControl('', {
+      validators: [Validators.required, this.emailFormatValidator],
+      // asyncValidators: [this.checkEmailExists()],
+      // updateOn: 'blur', // To ensure the correctness of what the user leaves the input
+    }),
+    password: new FormControl('', {
+      validators: [
+        Validators.required,
+        Validators.minLength(8),
+        this.passwordStrengthValidator,
+      ]}),
     phone: new FormControl('', [
       Validators.required,
       this.egyptianPhoneValidator,
     ]),
   });
+
+  // constructor(private http: HttpClient) {}
+
+  // checkEmailExists(): AsyncValidatorFn {
+  //   return (control: AbstractControl): Observable<ValidationErrors | null> => {
+  //     return of(control.value).pipe(
+  //       debounceTime(500),
+  //       switchMap((value) =>
+  //         this.http.get<boolean>(`api/checkEmail?email=${value}`).pipe(
+  //           map((exists) => (exists ? { emailExists: true } : null)),
+  //           catchError(() => of(null))
+  //         )
+  //       )
+  //     );
+  //   };
+  // }
 
   // Form control getters
   get email() {
