@@ -1,15 +1,12 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
   FormGroup,
-  FormsModule,
   ReactiveFormsModule,
-  ValidationErrors,
   Validators,
+  ValidationErrors,
 } from '@angular/forms';
 
 @Component({
@@ -32,16 +29,53 @@ export class LoginComponent {
     ]),
   });
 
+  // Cleaner Approach
+  // Form control getters
+  get email() {
+    return this.reactiveForm.get('email');
+  }
+  get password() {
+    return this.reactiveForm.get('password');
+  }
+  get phone() {
+    return this.reactiveForm.get('phone');
+  }
+
+  // Validation state getters
+  get emailIsInvalid() {
+    return this.email?.invalid && this.email?.touched;
+  }
+  get passwordIsInvalid() {
+    return this.password?.invalid && this.password?.touched;
+  }
+  get phoneIsInvalid() {
+    return this.phone?.invalid && this.phone?.touched;
+  }
+
+  // Combined form state
+  get showFormError() {
+    return (
+      this.email?.touched &&
+      this.email?.dirty &&
+      this.email?.invalid &&
+      this.password?.touched &&
+      this.password?.dirty &&
+      this.phone?.touched &&
+      this.phone?.dirty &&
+      this.reactiveForm.invalid
+    );
+  }
+
   onSubmit() {
     if (this.reactiveForm.valid) {
       console.log('Form submitted:', this.reactiveForm.value);
+      // Handle form submission
     }
   }
 
-  // control = new FormControl('', [Validators.required, egyptianPhoneValidator]);
-  // angular do egyptianPhoneValidator(control);
-  // phoneForm = new FormGroup({ phone: control });
-  egyptianPhoneValidator(control: AbstractControl): ValidationErrors | null {
+  private egyptianPhoneValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
     const regex = /^01[0125][0-9]{8}$/;
     const value = control.value || '';
     return regex.test(value) ? null : { egyptianPhone: true };
