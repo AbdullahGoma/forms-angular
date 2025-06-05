@@ -9,16 +9,16 @@
         <input 
           id="email" 
           type="email" 
-          formControlName="email"
-          [class.invalid]="reactiveForm.get('email')?.invalid && reactiveForm.get('email')?.touched"
+          [formControl]="reactiveForm.controls.email"
+          [class.invalid]="reactiveForm.controls.email.invalid && reactiveForm.get('email')?.touched"
         />
       </div>
-      @if (reactiveForm.get('email')?.invalid && reactiveForm.get('email')?.touched) {
+      @if (reactiveForm.controls.email.invalid && reactiveForm.controls.email.touched) {
         <div class="control-error">
-          @if (reactiveForm.get('email')?.errors?.['required']) {
+          @if (reactiveForm.controls.email.errors?.['required']) {
             <span>Email is required</span>
           }
-          @if (reactiveForm.get('email')?.errors?.['email']) {
+          @if (reactiveForm.controls.email.errors?.['email']) {
             <span>Please enter a valid email address</span>
           }
         </div>
