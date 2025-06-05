@@ -87,4 +87,8 @@ export class SignupComponent implements OnInit {
       this.signupForm.markAsUntouched();
     }
   }
+
+  onReset() {
+    this.signupForm.reset();
+  }
 }
