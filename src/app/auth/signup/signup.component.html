@@ -72,7 +72,8 @@
           <span>Please confirm your password</span>
           }
         </div>
-        } @if (passwords?.errors?.['passwordMismatch'] && confirmPassword?.touched) {
+        } @if (passwords?.errors?.['passwordMismatch'] &&
+        confirmPassword?.touched) {
         <div class="control-error">
           <span>Passwords do not match</span>
         </div>
@@ -225,26 +226,40 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div formArrayName="source" class="form-group">
     <fieldset>
       <legend>How did you find us?</legend>
       <div class="control">
-        <input type="checkbox" id="google" formControlName="google" />
+        <input
+          type="checkbox"
+          id="google"
+          name="acquisition"
+          value="google"
+          formControlName="0"
+        />
         <label for="google">Google</label>
       </div>
 
       <div class="control">
-        <input type="checkbox" id="friend" formControlName="friend" />
+        <input
+          type="checkbox"
+          id="friend"
+          name="acquisition"
+          value="friend"
+          formControlName="1"
+        />
         <label for="friend">Referred by friend</label>
       </div>
 
       <div class="control">
         <input
           type="checkbox"
-          id="other-source"
-          formControlName="otherSource"
+          id="other"
+          name="acquisition"
+          value="other"
+          formControlName="2"
         />
-        <label for="other-source">Other</label>
+        <label for="other">Other</label>
       </div>
     </fieldset>
   </div>

@@ -9,6 +9,7 @@ import {
   Validators,
   ValidationErrors,
   AsyncValidatorFn,
+  FormArray,
 } from '@angular/forms';
 import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 
@@ -24,9 +25,10 @@ let initialFormData: any = {
   postalCode: '',
   city: '',
   role: '',
-  google: false,
-  friend: false,
-  otherSource: false,
+  source: [false, false, false],
+  // google: false,
+  // friend: false,
+  // otherSource: false,
   terms: false,
 };
 
@@ -98,9 +100,14 @@ export class SignupComponent implements OnInit {
     role: new FormControl<UserRole>(initialFormData.role, {
       validators: [Validators.required],
     }),
-    google: new FormControl(initialFormData.google),
-    friend: new FormControl(initialFormData.friend),
-    otherSource: new FormControl(initialFormData.otherSource),
+    source: new FormArray([
+      new FormControl(initialFormData.source?.[0] || false), // Google
+      new FormControl(initialFormData.source?.[1] || false), // Friend
+      new FormControl(initialFormData.source?.[2] || false), // Other
+    ]),
+    // google: new FormControl(initialFormData.google),
+    // friend: new FormControl(initialFormData.friend),
+    // otherSource: new FormControl(initialFormData.otherSource),
     terms: new FormControl(initialFormData.terms, {
       validators: [Validators.requiredTrue],
     }),
@@ -167,6 +174,9 @@ export class SignupComponent implements OnInit {
   }
   get terms() {
     return this.reactiveForm.get('terms');
+  }
+  get sourceArray(): FormArray {
+    return this.reactiveForm.get('source') as FormArray;
   }
 
   // Validation state getters
@@ -309,15 +319,28 @@ export class SignupComponent implements OnInit {
       console.log('Form submitted:', this.reactiveForm.value);
       // Handle form submission
       localStorage.removeItem('saved-signup-form');
+      this.reactiveForm.reset();
     }
   }
 
   onReset() {
     this.reactiveForm.reset({
-      google: false,
-      friend: false,
-      otherSource: false,
-      terms: false,
+      passwords: {
+        password: '',
+        confirmPassword: '',
+      },
+      name: {
+        firstName: '',
+        lastName: '',
+      },
+      address: {
+        street: '',
+        number: '',
+        postalCode: '',
+        city: '',
+      },
+      source: [false, false, false],
+      terms: true,
     });
   }
 }
