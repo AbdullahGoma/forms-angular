@@ -86,6 +86,7 @@
 
   <div formGroupName="name" class="form-group">
     <!-- Name Fields -->
+    <!-- First Name -->
     <div class="control-row">
       <div class="control">
         <label for="first-name">First Name</label>
@@ -99,11 +100,22 @@
         </div>
         @if (firstNameIsInvalid) {
         <div class="control-error">
+          @if (firstName?.errors?.['required']) {
           <span>First name is required</span>
+          } @if (firstName?.errors?.['minlength']) {
+          <span>Minimum 2 characters</span>
+          } @if (firstName?.errors?.['maxlength']) {
+          <span>Maximum 50 characters</span>
+          } @if (firstName?.errors?.['invalidName']) {
+          <span>Please enter a valid name</span>
+          } @if (firstName?.errors?.['containsInvalidChars']) {
+          <span>Cannot contain numbers or special characters</span>
+          }
         </div>
         }
       </div>
 
+      <!-- Last Name -->
       <div class="control">
         <label for="last-name">Last Name</label>
         <div class="input-wrapper">
@@ -116,7 +128,17 @@
         </div>
         @if (lastNameIsInvalid) {
         <div class="control-error">
+          @if (lastName?.errors?.['required']) {
           <span>Last name is required</span>
+          } @if (lastName?.errors?.['minlength']) {
+          <span>Minimum 2 characters</span>
+          } @if (lastName?.errors?.['maxlength']) {
+          <span>Maximum 50 characters</span>
+          } @if (lastName?.errors?.['invalidName']) {
+          <span>Please enter a valid name</span>
+          } @if (lastName?.errors?.['containsInvalidChars']) {
+          <span>Cannot contain numbers or special characters</span>
+          }
         </div>
         }
       </div>

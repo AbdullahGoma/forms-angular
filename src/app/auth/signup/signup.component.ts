@@ -73,14 +73,26 @@ export class SignupComponent implements OnInit {
           validators: [Validators.required],
         }),
       },
-      { validators: this.passwordMatchValidator }
+      { validators: [this.passwordMatchValidator] }
     ),
     name: new FormGroup({
       firstName: new FormControl(initialFormData.firstName, {
-        validators: [Validators.required],
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          this.nameValidator,
+          this.strictNameValidator,
+        ],
       }),
       lastName: new FormControl(initialFormData.lastName, {
-        validators: [Validators.required],
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(50),
+          this.nameValidator,
+          this.strictNameValidator,
+        ],
       }),
     }),
     address: new FormGroup({
@@ -145,14 +157,16 @@ export class SignupComponent implements OnInit {
   get confirmPassword() {
     return this.reactiveForm.get('passwords.confirmPassword');
   }
-  get name() {
-    return this.reactiveForm.get('name');
+  get nameGroup() {
+    return this.reactiveForm.get('name') as FormGroup;
   }
+
   get firstName() {
-    return this.reactiveForm.get('name.firstName');
+    return this.nameGroup.get('firstName');
   }
+
   get lastName() {
-    return this.reactiveForm.get('name.lastName');
+    return this.nameGroup.get('lastName');
   }
   get address() {
     return this.reactiveForm.get('address');
@@ -314,7 +328,38 @@ export class SignupComponent implements OnInit {
       : null;
   }
 
+  // Validator for human names
+  private nameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+
+    // Basic name validation rules
+    const isValid = /^[a-zA-Zà-üÀ-Ü\s'-]{2,50}$/.test(value);
+
+    if (!isValid) {
+      return { invalidName: true };
+    }
+    return null;
+  }
+
+  // Validator to prevent numbers/special chars (except hyphen and apostrophe)
+  private strictNameValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value || '';
+
+    if (/[0-9!@#$%^&*()_+=<>?/\\[\]{}|]/.test(value)) {
+      return { containsInvalidChars: true };
+    }
+
+    if (!/^[a-zA-Zà-üÀ-Ü' -]+$/.test(value)) {
+      return { invalidFormat: true };
+    }
+
+    return null;
+  }
+
   onSubmit() {
+    if (this.reactiveForm.invalid) return;
     if (this.reactiveForm.valid) {
       console.log('Form submitted:', this.reactiveForm.value);
       // Handle form submission
