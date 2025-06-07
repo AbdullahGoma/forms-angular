@@ -59,33 +59,39 @@ export class SignupComponent implements OnInit {
         // asyncValidators: [this.checkEmailExists()],
         // updateOn: 'blur',
       }),
-      password: new FormControl(initialFormData.password, {
-        validators: [
-          Validators.required,
-          Validators.minLength(8),
-          this.passwordStrengthValidator,
-        ],
+      passwords: new FormGroup({
+        password: new FormControl(initialFormData.password, {
+          validators: [
+            Validators.required,
+            Validators.minLength(8),
+            this.passwordStrengthValidator,
+          ],
+        }),
+        confirmPassword: new FormControl(initialFormData.confirmPassword, {
+          validators: [Validators.required],
+        }),
       }),
-      confirmPassword: new FormControl(initialFormData.confirmPassword, {
-        validators: [Validators.required],
+      name: new FormGroup({
+        firstName: new FormControl(initialFormData.firstName, {
+          validators: [Validators.required],
+        }),
+        lastName: new FormControl(initialFormData.lastName, {
+          validators: [Validators.required],
+        }),
       }),
-      firstName: new FormControl(initialFormData.firstName, {
-        validators: [Validators.required],
-      }),
-      lastName: new FormControl(initialFormData.lastName, {
-        validators: [Validators.required],
-      }),
-      street: new FormControl(initialFormData.street, {
-        validators: [Validators.required],
-      }),
-      number: new FormControl(initialFormData.number, {
-        validators: [Validators.required],
-      }),
-      postalCode: new FormControl(initialFormData.postalCode, {
-        validators: [Validators.required],
-      }),
-      city: new FormControl(initialFormData.city, {
-        validators: [Validators.required],
+      address: new FormGroup({
+        street: new FormControl(initialFormData.street, {
+          validators: [Validators.required],
+        }),
+        number: new FormControl(initialFormData.number, {
+          validators: [Validators.required],
+        }),
+        postalCode: new FormControl(initialFormData.postalCode, {
+          validators: [Validators.required],
+        }),
+        city: new FormControl(initialFormData.city, {
+          validators: [Validators.required],
+        }),
       }),
       role: new FormControl<UserRole>(initialFormData.role, {
         validators: [Validators.required],
@@ -108,7 +114,7 @@ export class SignupComponent implements OnInit {
       .subscribe({
         next: (value) => {
           // Don't save password and confirmPassword for security reasons
-          const { password, confirmPassword, ...valuesToSave } = value;
+          const { passwords, ...valuesToSave } = value;
           window.localStorage.setItem(
             'saved-signup-form',
             JSON.stringify(valuesToSave)
@@ -123,29 +129,38 @@ export class SignupComponent implements OnInit {
   get email() {
     return this.reactiveForm.get('email');
   }
+  get passwords() {
+    return this.reactiveForm.get('passwords');
+  }
   get password() {
-    return this.reactiveForm.get('password');
+    return this.reactiveForm.get('passwords.password');
   }
   get confirmPassword() {
-    return this.reactiveForm.get('confirmPassword');
+    return this.reactiveForm.get('passwords.confirmPassword');
+  }
+  get name() {
+    return this.reactiveForm.get('name');
   }
   get firstName() {
-    return this.reactiveForm.get('firstName');
+    return this.reactiveForm.get('name.firstName');
   }
   get lastName() {
-    return this.reactiveForm.get('lastName');
+    return this.reactiveForm.get('name.lastName');
+  }
+  get address() {
+    return this.reactiveForm.get('address');
   }
   get street() {
-    return this.reactiveForm.get('street');
+    return this.reactiveForm.get('address.street');
   }
   get number() {
-    return this.reactiveForm.get('number');
+    return this.reactiveForm.get('address.number');
   }
   get postalCode() {
-    return this.reactiveForm.get('postalCode');
+    return this.reactiveForm.get('address.postalCode');
   }
   get city() {
-    return this.reactiveForm.get('city');
+    return this.reactiveForm.get('address.city');
   }
   get role() {
     return this.reactiveForm.get('role');
@@ -281,10 +296,10 @@ export class SignupComponent implements OnInit {
   private passwordMatchValidator(
     form: AbstractControl
   ): ValidationErrors | null {
-    const password = form.get('password')?.value;
-    const confirmPassword = form.get('confirmPassword')?.value;
-
-    return password && confirmPassword && password !== confirmPassword
+    const passwords = form.get('passwords');
+    return passwords &&
+      passwords.get('password')?.value !==
+        passwords.get('confirmPassword')?.value
       ? { passwordMismatch: true }
       : null;
   }
