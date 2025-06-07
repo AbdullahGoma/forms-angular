@@ -212,11 +212,9 @@
           [class.invalid]="roleIsInvalid"
         >
           <option value="">Select your role</option>
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
-          <option value="employee">Employee</option>
-          <option value="founder">Founder</option>
-          <option value="other">Other</option>
+          @for (role of getRoleOptions(); track role.value) {
+          <option [value]="role.value">{{ role.display }}</option>
+          }
         </select>
       </div>
       @if (roleIsInvalid) {

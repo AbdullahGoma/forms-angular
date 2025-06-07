@@ -35,6 +35,14 @@ if (savedForm) {
   initialFormData = { ...initialFormData, ...JSON.parse(savedForm) };
 }
 
+enum UserRole {
+  Student = 'student',
+  Teacher = 'teacher',
+  Employee = 'employee',
+  Founder = 'founder',
+  Other = 'other',
+}
+
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -43,6 +51,7 @@ if (savedForm) {
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
+  UserRole = UserRole;
   reactiveForm = new FormGroup(
     {
       email: new FormControl(initialFormData.email, {
@@ -78,7 +87,7 @@ export class SignupComponent implements OnInit {
       city: new FormControl(initialFormData.city, {
         validators: [Validators.required],
       }),
-      role: new FormControl(initialFormData.role, {
+      role: new FormControl<UserRole>(initialFormData.role, {
         validators: [Validators.required],
       }),
       google: new FormControl(initialFormData.google),
@@ -212,6 +221,32 @@ export class SignupComponent implements OnInit {
       this.terms?.touched &&
       this.reactiveForm.invalid
     );
+  }
+
+  // Using Enum to Roles
+  getRoleOptions(): { value: string; display: string }[] {
+    return Object.keys(UserRole).map((key) => ({
+      value: UserRole[key as keyof typeof UserRole],
+      display: this.formatRoleDisplay(UserRole[key as keyof typeof UserRole]),
+    }));
+  }
+
+  private formatRoleDisplay(roleValue: string): string {
+    // Convert enum value to display text
+    switch (roleValue) {
+      case UserRole.Student:
+        return 'Student';
+      case UserRole.Teacher:
+        return 'Teacher';
+      case UserRole.Employee:
+        return 'Employee';
+      case UserRole.Founder:
+        return 'Founder';
+      case UserRole.Other:
+        return 'Other';
+      default:
+        return roleValue;
+    }
   }
 
   // Custom validators
