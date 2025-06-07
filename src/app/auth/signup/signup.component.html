@@ -63,7 +63,7 @@
             id="confirm-password"
             type="password"
             formControlName="confirmPassword"
-            [class.invalid]="confirmPasswordIsInvalid || reactiveForm.errors?.['passwordMismatch']"
+            [class.invalid]="confirmPasswordIsInvalid || (passwords?.errors?.['passwordMismatch'] && confirmPassword?.touched)"
           />
         </div>
         @if (confirmPasswordIsInvalid) {
@@ -72,7 +72,7 @@
           <span>Please confirm your password</span>
           }
         </div>
-        } @if (reactiveForm.errors?.['passwordMismatch'] && confirmPassword?.touched) {
+        } @if (passwords?.errors?.['passwordMismatch'] && confirmPassword?.touched) {
         <div class="control-error">
           <span>Passwords do not match</span>
         </div>

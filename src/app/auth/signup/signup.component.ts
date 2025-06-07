@@ -52,14 +52,14 @@ enum UserRole {
 })
 export class SignupComponent implements OnInit {
   UserRole = UserRole;
-  reactiveForm = new FormGroup(
-    {
-      email: new FormControl(initialFormData.email, {
-        validators: [Validators.required, this.emailFormatValidator],
-        // asyncValidators: [this.checkEmailExists()],
-        // updateOn: 'blur',
-      }),
-      passwords: new FormGroup({
+  reactiveForm = new FormGroup({
+    email: new FormControl(initialFormData.email, {
+      validators: [Validators.required, this.emailFormatValidator],
+      // asyncValidators: [this.checkEmailExists()],
+      // updateOn: 'blur',
+    }),
+    passwords: new FormGroup(
+      {
         password: new FormControl(initialFormData.password, {
           validators: [
             Validators.required,
@@ -70,41 +70,41 @@ export class SignupComponent implements OnInit {
         confirmPassword: new FormControl(initialFormData.confirmPassword, {
           validators: [Validators.required],
         }),
-      }),
-      name: new FormGroup({
-        firstName: new FormControl(initialFormData.firstName, {
-          validators: [Validators.required],
-        }),
-        lastName: new FormControl(initialFormData.lastName, {
-          validators: [Validators.required],
-        }),
-      }),
-      address: new FormGroup({
-        street: new FormControl(initialFormData.street, {
-          validators: [Validators.required],
-        }),
-        number: new FormControl(initialFormData.number, {
-          validators: [Validators.required],
-        }),
-        postalCode: new FormControl(initialFormData.postalCode, {
-          validators: [Validators.required],
-        }),
-        city: new FormControl(initialFormData.city, {
-          validators: [Validators.required],
-        }),
-      }),
-      role: new FormControl<UserRole>(initialFormData.role, {
+      },
+      { validators: this.passwordMatchValidator }
+    ),
+    name: new FormGroup({
+      firstName: new FormControl(initialFormData.firstName, {
         validators: [Validators.required],
       }),
-      google: new FormControl(initialFormData.google),
-      friend: new FormControl(initialFormData.friend),
-      otherSource: new FormControl(initialFormData.otherSource),
-      terms: new FormControl(initialFormData.terms, {
-        validators: [Validators.requiredTrue],
+      lastName: new FormControl(initialFormData.lastName, {
+        validators: [Validators.required],
       }),
-    },
-    { validators: this.passwordMatchValidator }
-  );
+    }),
+    address: new FormGroup({
+      street: new FormControl(initialFormData.street, {
+        validators: [Validators.required],
+      }),
+      number: new FormControl(initialFormData.number, {
+        validators: [Validators.required],
+      }),
+      postalCode: new FormControl(initialFormData.postalCode, {
+        validators: [Validators.required],
+      }),
+      city: new FormControl(initialFormData.city, {
+        validators: [Validators.required],
+      }),
+    }),
+    role: new FormControl<UserRole>(initialFormData.role, {
+      validators: [Validators.required],
+    }),
+    google: new FormControl(initialFormData.google),
+    friend: new FormControl(initialFormData.friend),
+    otherSource: new FormControl(initialFormData.otherSource),
+    terms: new FormControl(initialFormData.terms, {
+      validators: [Validators.requiredTrue],
+    }),
+  });
 
   private destroyRef = inject(DestroyRef);
 
@@ -294,12 +294,12 @@ export class SignupComponent implements OnInit {
   }
 
   private passwordMatchValidator(
-    form: AbstractControl
+    group: AbstractControl
   ): ValidationErrors | null {
-    const passwords = form.get('passwords');
-    return passwords &&
-      passwords.get('password')?.value !==
-        passwords.get('confirmPassword')?.value
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    return password && confirmPassword && password !== confirmPassword
       ? { passwordMismatch: true }
       : null;
   }
