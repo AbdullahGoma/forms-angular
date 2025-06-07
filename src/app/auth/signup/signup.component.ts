@@ -10,6 +10,7 @@ import {
   ValidationErrors,
   AsyncValidatorFn,
   FormArray,
+  ValidatorFn,
 } from '@angular/forms';
 import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 
@@ -73,7 +74,12 @@ export class SignupComponent implements OnInit {
           validators: [Validators.required],
         }),
       },
-      { validators: [this.passwordMatchValidator] }
+      // { validators: [this.passwordMatchValidator] }
+      {
+        validators: [
+          this.passwordMatchValidatorGeneric('password', 'confirmPassword'),
+        ],
+      }
     ),
     name: new FormGroup({
       firstName: new FormControl(initialFormData.firstName, {
@@ -326,6 +332,22 @@ export class SignupComponent implements OnInit {
     return password && confirmPassword && password !== confirmPassword
       ? { passwordMismatch: true }
       : null;
+  }
+
+  private passwordMatchValidatorGeneric(
+    passwordKey: string,
+    confirmPasswordKey: string
+  ): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const password = group.get(passwordKey)?.value;
+      const confirmPassword = group.get(confirmPasswordKey)?.value;
+
+      if (!password || !confirmPassword) {
+        return null; // skip validation if either field is missing (e.g., not initialized yet)
+      }
+
+      return password !== confirmPassword ? { passwordMismatch: true } : null;
+    };
   }
 
   // Validator for human names
