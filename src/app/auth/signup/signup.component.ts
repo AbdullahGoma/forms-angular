@@ -15,6 +15,8 @@ import { catchError, debounceTime, map, Observable, of, switchMap } from 'rxjs';
 // Load initial values from localStorage
 let initialFormData: any = {
   email: '',
+  password: '',
+  confirmPassword: '',
   firstName: '',
   lastName: '',
   street: '',
@@ -48,14 +50,14 @@ export class SignupComponent implements OnInit {
         // asyncValidators: [this.checkEmailExists()],
         // updateOn: 'blur',
       }),
-      password: new FormControl('', {
+      password: new FormControl(initialFormData.password, {
         validators: [
           Validators.required,
           Validators.minLength(8),
           this.passwordStrengthValidator,
         ],
       }),
-      confirmPassword: new FormControl('', {
+      confirmPassword: new FormControl(initialFormData.confirmPassword, {
         validators: [Validators.required],
       }),
       firstName: new FormControl(initialFormData.firstName, {
@@ -96,7 +98,7 @@ export class SignupComponent implements OnInit {
       .pipe(debounceTime(500))
       .subscribe({
         next: (value) => {
-          // Create a new object without password fields
+          // Don't save password and confirmPassword for security reasons
           const { password, confirmPassword, ...valuesToSave } = value;
           window.localStorage.setItem(
             'saved-signup-form',
