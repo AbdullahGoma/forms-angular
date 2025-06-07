@@ -1,12 +1,9 @@
-<form
-  [formGroup]="signupForm"
-  (ngSubmit)="onSignup()"
-  class="signup-form"
->
+<form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()" class="signup-form">
   <h2>Welcome on board!</h2>
   <p>We just need a little bit of data from you to get you started 🚀</p>
 
   <div class="form-group">
+    <!-- Email Field -->
     <div class="control">
       <label for="email">Email</label>
       <div class="input-wrapper">
@@ -14,20 +11,21 @@
           id="email"
           type="email"
           formControlName="email"
-          [class.invalid]="signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
+          [class.invalid]="emailIsInvalid"
         />
       </div>
-      @if (signupForm.get('email')?.invalid && signupForm.get('email')?.touched) {
+      @if (emailIsInvalid) {
       <div class="control-error">
-        @if (signupForm.get('email')?.errors?.['required']) {
+        @if (email?.errors?.['required']) {
         <span>Email is required</span>
-        } @if (signupForm.get('email')?.errors?.['email']) {
+        } @if (email?.errors?.['invalidEmail']) {
         <span>Please enter a valid email address</span>
         }
       </div>
       }
     </div>
 
+    <!-- Password Fields -->
     <div class="control-row">
       <div class="control">
         <label for="password">Password</label>
@@ -36,15 +34,23 @@
             id="password"
             type="password"
             formControlName="password"
-            [class.invalid]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+            [class.invalid]="passwordIsInvalid"
           />
         </div>
-        @if (signupForm.get('password')?.invalid && signupForm.get('password')?.touched) {
+        @if (passwordIsInvalid) {
         <div class="control-error">
-          @if (signupForm.get('password')?.errors?.['required']) {
+          @if (password?.errors?.['required']) {
           <span>Password is required</span>
-          } @if (signupForm.get('password')?.errors?.['minlength']) {
+          } @if (password?.errors?.['minlength']) {
           <span>Password must be at least 8 characters</span>
+          } @if (password?.errors?.['missingUpperCase']) {
+          <span>Must contain at least one uppercase letter</span>
+          } @if (password?.errors?.['missingLowerCase']) {
+          <span>Must contain at least one lowercase letter</span>
+          } @if (password?.errors?.['missingNumber']) {
+          <span>Must contain at least one number</span>
+          } @if (password?.errors?.['missingSpecialChar']) {
+          <span>Must contain at least one special character</span>
           }
         </div>
         }
@@ -57,23 +63,16 @@
             id="confirm-password"
             type="password"
             formControlName="confirmPassword"
-            [class.invalid]="
-              (signupForm.get('confirmPassword')?.invalid ||
-                signupForm.value.password !==
-                  signupForm.value.confirmPassword) &&
-              signupForm.get('confirmPassword')?.touched
-            "
+            [class.invalid]="confirmPasswordIsInvalid || reactiveForm.errors?.['passwordMismatch']"
           />
         </div>
-        @if (signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched) {
+        @if (confirmPasswordIsInvalid) {
         <div class="control-error">
-          @if (signupForm.get('confirmPassword')?.errors?.['required']) {
+          @if (confirmPassword?.errors?.['required']) {
           <span>Please confirm your password</span>
           }
         </div>
-        } @if (signupForm.value.password && signupForm.value.confirmPassword &&
-        signupForm.value.password !== signupForm.value.confirmPassword &&
-        signupForm.get('confirmPassword')?.touched) {
+        } @if (reactiveForm.errors?.['passwordMismatch']) {
         <div class="control-error">
           <span>Passwords do not match</span>
         </div>
@@ -85,6 +84,7 @@
   <hr />
 
   <div class="form-group">
+    <!-- Name Fields -->
     <div class="control-row">
       <div class="control">
         <label for="first-name">First Name</label>
@@ -93,10 +93,10 @@
             type="text"
             id="first-name"
             formControlName="firstName"
-            [class.invalid]="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched"
+            [class.invalid]="firstNameIsInvalid"
           />
         </div>
-        @if (signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched) {
+        @if (firstNameIsInvalid) {
         <div class="control-error">
           <span>First name is required</span>
         </div>
@@ -110,10 +110,10 @@
             type="text"
             id="last-name"
             formControlName="lastName"
-            [class.invalid]="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched"
+            [class.invalid]="lastNameIsInvalid"
           />
         </div>
-        @if (signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched) {
+        @if (lastNameIsInvalid) {
         <div class="control-error">
           <span>Last name is required</span>
         </div>
@@ -134,10 +134,10 @@
               type="text"
               id="street"
               formControlName="street"
-              [class.invalid]="signupForm.get('street')?.invalid && signupForm.get('street')?.touched"
+              [class.invalid]="streetIsInvalid"
             />
           </div>
-          @if (signupForm.get('street')?.invalid && signupForm.get('street')?.touched) {
+          @if (streetIsInvalid) {
           <div class="control-error">
             <span>Street is required</span>
           </div>
@@ -151,10 +151,10 @@
               type="text"
               id="number"
               formControlName="number"
-              [class.invalid]="signupForm.get('number')?.invalid && signupForm.get('number')?.touched"
+              [class.invalid]="numberIsInvalid"
             />
           </div>
-          @if (signupForm.get('number')?.invalid && signupForm.get('number')?.touched) {
+          @if (numberIsInvalid) {
           <div class="control-error">
             <span>Number is required</span>
           </div>
@@ -170,10 +170,10 @@
               type="text"
               id="postal-code"
               formControlName="postalCode"
-              [class.invalid]="signupForm.get('postalCode')?.invalid && signupForm.get('postalCode')?.touched"
+              [class.invalid]="postalCodeIsInvalid"
             />
           </div>
-          @if (signupForm.get('postalCode')?.invalid && signupForm.get('postalCode')?.touched) {
+          @if (postalCodeIsInvalid) {
           <div class="control-error">
             <span>Postal code is required</span>
           </div>
@@ -187,10 +187,10 @@
               type="text"
               id="city"
               formControlName="city"
-              [class.invalid]="signupForm.get('city')?.invalid && signupForm.get('city')?.touched"
+              [class.invalid]="cityIsInvalid"
             />
           </div>
-          @if (signupForm.get('city')?.invalid && signupForm.get('city')?.touched) {
+          @if (cityIsInvalid) {
           <div class="control-error">
             <span>City is required</span>
           </div>
@@ -203,29 +203,27 @@
   <hr />
 
   <div class="form-group">
-    <div class="control-row">
-      <div class="control">
-        <label for="role">What best describes your role?</label>
-        <div class="input-wrapper">
-          <select
-            id="role"
-            formControlName="role"
-            [class.invalid]="signupForm.get('role')?.invalid && signupForm.get('role')?.touched"
-          >
-            <option value="">Select your role</option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="employee">Employee</option>
-            <option value="founder">Founder</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        @if (signupForm.get('role')?.invalid && signupForm.get('role')?.touched) {
-        <div class="control-error">
-          <span>Please select your role</span>
-        </div>
-        }
+    <div class="control">
+      <label for="role">What best describes your role?</label>
+      <div class="input-wrapper">
+        <select
+          id="role"
+          formControlName="role"
+          [class.invalid]="roleIsInvalid"
+        >
+          <option value="">Select your role</option>
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+          <option value="employee">Employee</option>
+          <option value="founder">Founder</option>
+          <option value="other">Other</option>
+        </select>
       </div>
+      @if (roleIsInvalid) {
+      <div class="control-error">
+        <span>Please select your role</span>
+      </div>
+      }
     </div>
   </div>
 
@@ -233,20 +231,12 @@
     <fieldset>
       <legend>How did you find us?</legend>
       <div class="control">
-        <input
-          type="checkbox"
-          id="google"
-          formControlName="google"
-        />
+        <input type="checkbox" id="google" formControlName="google" />
         <label for="google">Google</label>
       </div>
 
       <div class="control">
-        <input
-          type="checkbox"
-          id="friend"
-          formControlName="friend"
-        />
+        <input type="checkbox" id="friend" formControlName="friend" />
         <label for="friend">Referred by friend</label>
       </div>
 
@@ -268,11 +258,11 @@
           type="checkbox"
           id="terms-and-conditions"
           formControlName="terms"
-          [class.invalid]="signupForm.get('terms')?.invalid && signupForm.get('terms')?.touched"
+          [class.invalid]="termsIsInvalid"
         />
         I agree to the terms and conditions
       </label>
-      @if (signupForm.get('terms')?.invalid && signupForm.get('terms')?.touched) {
+      @if (termsIsInvalid) {
       <div class="checkbox-error">
         <span>You must accept the terms and conditions</span>
       </div>
@@ -280,15 +270,15 @@
     </div>
   </div>
 
-  @if ((signupForm.get('email')?.touched && signupForm.get('password')?.touched && signupForm.get('confirmPassword')?.touched &&
-  signupForm.get('firstName')?.touched && signupForm.get('lastName')?.touched) &&
-  signupForm.invalid) {
+  @if (showFormError) {
   <div class="form-error">Please fix the errors above before submitting.</div>
   }
 
   <div class="form-actions">
-    <button type="button" class="button button-flat" (click)="onReset()">Reset</button>
-    <button type="submit" class="button" [disabled]="signupForm.invalid">
+    <button type="button" class="button button-flat" (click)="onReset()">
+      Reset
+    </button>
+    <button type="submit" class="button" [disabled]="reactiveForm.invalid">
       Sign up
     </button>
   </div>
