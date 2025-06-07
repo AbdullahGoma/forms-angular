@@ -471,6 +471,8 @@ legend {
   font-size: 0.85rem;
   font-weight: 500;
   padding: 0.5rem 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
   background: rgba(255, 153, 102, 0.1);
   border-left: 3px solid var(--error);
   border-radius: 0 0 6px 6px;
@@ -483,6 +485,8 @@ legend {
   line-height: 1.4;
   white-space: normal;
   min-height: 3rem;
+  overflow-y: auto; /* Adds scroll if too many errors */
+  scrollbar-width: thin;
 }
 
 .control input.invalid,
